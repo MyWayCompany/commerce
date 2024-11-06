@@ -30,6 +30,11 @@ def create(request):
         return render(request, "listings/create.html", {
             "categories": Category.objects.all()
         })
+    
+def detail(request, listing_id):
+    return render(request, "listings/detail.html", {
+        "listing": Listing.objects.get(id=listing_id)
+    })
 
 def watching_listing(request, listing_id):
     try:
