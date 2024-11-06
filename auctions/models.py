@@ -3,7 +3,7 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
-class User(AbstractUser):
+class User(AbstractUser):   
     pass
 
 class Category(models.Model):
@@ -31,6 +31,7 @@ class Listing(models.Model):
     start_price = models.IntegerField()
     dateTime_creation = models.DateTimeField()   
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="created_user")    
+    users =  models.ManyToManyField(User, related_name="watch_listing", blank=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="category", blank=True)
     comment = models.ManyToManyField(Comment, null=True, blank=True, related_name="comments")
     preview = models.FileField(upload_to=user_directory_path)

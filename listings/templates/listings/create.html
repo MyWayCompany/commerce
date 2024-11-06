@@ -1,30 +1,33 @@
 {% extends 'auctions/layout.html' %}
 {% block body %}
 <h1>Создание объявления</h1>
-<form action="{% url 'create_listing' %}" method="POST">
-    {% csrf_token %}
-    <div class="mb-3">
-      <label for="inputTitle" class="form-label">Заголовок:</label>
-      <input type="text" class="form-control" id="inputTitle" name="title" placeholder="Заголовок объявления">      
-    </div>
-    <div class="mb-3">
-      <label for="inputDesc" class="form-label">Описание: </label>
-      <input type="text" class="form-control" id="inputDesc" name="description" placeholder="Описание объявления">
-    </div>
-    <div class="mb-3">
-        <label for="inputPrice" class="form-label">Стартовая цена: </label>
-        <input type="text" class="form-control" id="inputPrice" name="start_price" placeholder="Стартовая цена на аукционе">
-    </div>   
-    <select class="form-select" aria-label="Default select example">
-      <option selected>Выберите категорию из списка</option>
-      {% for category in categories %}
-      <option value="{{category.title}}">{{ category.title }}</option>        
-      {% endfor %}
-    </select>   
-    <div class="mb-3">
-        <label for="formFile" class="form-label">Фото для обложки объявления:</label>
-        <input class="form-control" type="file" id="formFile" name="preview">
-    </div>   
-    <button type="submit" class="btn btn-primary">Создать</button>
-  </form>
+{% if message %}
+<div>{{ message }}</div>
+{% endif %}
+  <form action="{% url 'create_listing' %}" method="POST" enctype="multipart/form-data"> 
+      {% csrf_token %}
+      <div class="mb-3">
+        <label for="inputTitle" class="form-label">Заголовок:</label>
+        <input type="text" class="form-control" id="inputTitle" name="title" placeholder="Заголовок объявления">      
+      </div>
+      <div class="mb-3">
+        <label for="inputDesc" class="form-label">Описание: </label>
+        <input type="text" class="form-control" id="inputDesc" name="description" placeholder="Описание объявления">
+      </div>
+      <div class="mb-3">
+          <label for="inputPrice" class="form-label">Стартовая цена: </label>
+          <input type="text" class="form-control" id="inputPrice" name="start_price" placeholder="Стартовая цена на аукционе">
+      </div>   
+      <select class="form-select" aria-label="Default select example" name="category">
+        <option selected>Выберите категорию из списка</option>
+        {% for category in categories %}
+        <option value="{{category.id}}">{{ category.title }}</option>        
+        {% endfor %}
+      </select>   
+      <div class="mb-3">
+          <label for="formFile" class="form-label">Фото для обложки объявления:</label>
+          <input class="form-control" type="file" id="formFile" name="preview" required>
+      </div>   
+      <button type="submit" class="btn btn-primary">Создать</button>
+    </form>
 {% endblock %}
