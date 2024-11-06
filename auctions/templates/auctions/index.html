@@ -1,7 +1,24 @@
 {% extends "auctions/layout.html" %}
 
 {% block body %}
-    <h2>Active Listings</h2>
 
-    TODO
+<h2>Активные объявления</h2>    
+{% for listing in listings %}
+<div class="card mb-3">
+    <div class="row g-0">
+      <div class="col-md-4">
+        <img src="{{listing.preview.url }}" class="img-fluid rounded-start" alt="...">    
+      </div>
+      <div class="col-md-8">
+        <div class="card-body">
+          <h5 class="card-title">{{ listing.title }}</h5>
+          <p class="card-text">{{ listing.description }}</p>
+          <p class="card-text"><small class="text-body-secondary">Дата создания: {{ listing.dateTime_creation }}</small></p>
+        </div>
+      </div>
+    </div>
+  </div>
+{% empty %}
+<p>Объявлений пока нет</p>
+{% endfor %}
 {% endblock %}
