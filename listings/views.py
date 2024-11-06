@@ -26,6 +26,16 @@ def create(request):
                 "message": F"Не удалось создать объявлениеб ошибка: {e}",
                 "categories": Category.objects.all()
             })
-    return render(request, "listings/create.html", {
-        "categories": Category.objects.all()
-    })
+    else:
+        return render(request, "listings/create.html", {
+            "categories": Category.objects.all()
+        })
+
+def watching_listing(request, listing_id):
+    try:
+        request.user.watch_listing.add(Listing.objects.get(id=listing_id))
+        return HttpResponseRedirect(reverse("index"))
+    except Exception as e:
+        return render(request, "auctions/", {
+            "error_watching": "Не удалось добавить объявление  вотслеживаемое"
+        })
