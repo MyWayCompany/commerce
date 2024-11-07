@@ -8,7 +8,6 @@ urlpatterns = [
     path("", views.index, name="listings"),
     path("create", views.create, name="create_listing"),
     path("<int:listing_id>", views.detail, name="detail"),
-    path("<int:listing_id>", views.watching_listing, name='watching')
 ]
 
 # включаем возможность обработки картинок

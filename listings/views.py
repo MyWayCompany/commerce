@@ -35,12 +35,3 @@ def detail(request, listing_id):
     return render(request, "listings/detail.html", {
         "listing": Listing.objects.get(id=listing_id)
     })
-
-def watching_listing(request, listing_id):
-    try:
-        request.user.watch_listing.add(Listing.objects.get(id=listing_id))
-        return HttpResponseRedirect(reverse("index"))
-    except Exception as e:
-        return render(request, "auctions/", {
-            "error_watching": "Не удалось добавить объявление  вотслеживаемое"
-        })
