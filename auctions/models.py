@@ -18,9 +18,6 @@ class Comment(models.Model):
     dateTime_creation = models.DateTimeField()
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="author")
 
-    def __str__(self) -> str:
-        return F"Комментарий полязователя: {self.user.username}"
-
 def user_directory_path(instance, filename):
     # путь, куда будет осуществлена загрузка MEDIA_ROOT/user_<id>/<filename>
     return 'user_{0}/{1}'.format(instance.user.id, filename)
@@ -33,7 +30,7 @@ class Listing(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="created_user")    
     users =  models.ManyToManyField(User, related_name="watch_listing", blank=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="category", blank=True)
-    comment = models.ManyToManyField(Comment, null=True, blank=True, related_name="comments")
+    comment = models.ManyToManyField(Comment, blank=True, related_name="listing_comments")
     preview = models.FileField(upload_to=user_directory_path)
     active = models.BooleanField(default=True)
 

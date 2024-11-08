@@ -4,7 +4,8 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 import datetime
 
-from auctions.models import Category, Listing
+
+from auctions.models import Category, Listing, Comment
 # Create your views here.
 def index(request):
     return render(request, "listings/index.html")
@@ -32,6 +33,34 @@ def create(request):
         })
     
 def detail(request, listing_id):
+    listing = Listing.objects.get(id=listing_id)
     return render(request, "listings/detail.html", {
-        "listing": Listing.objects.get(id=listing_id)
+        "listing": listing,
+        "comments": listing.comment.all(),
+        "count_comments": listing.comment.count()
     })
+
+
+def create_comment(request, listing_id):
+    if request.method == "POST" and request.POST["text"]:
+        try:
+            text = request.POST["text"]
+            listing  = Listing.objects.get(id=listing_id)
+            comment = Comment.objects.create(text=text, dateTime_creation = datetime.datetime.now(), user = request.user)
+            listing.comment.add(comment)
+            return render(request, "listings/detail.html", {
+                "listing": listing,
+                "comments": listing.comment.all(),
+                "count_comments": listing.comment.count()
+            })
+        except Exception as e:
+            return render(request, "listings/detail.html", {
+                "listing": Listing.objects.get(id=listing_id),
+                "message": F"Не удалось создать комментарий, {e}"
+            })
+    else:
+        return render(request, "listings/detail.html", {
+            "listing": Listing.objects.get(id=listing_id),
+            "comments": Listing.objects.get(id=listing_id).comment.all(),
+            "count_comments": Listing.objects.get(id=listing_id).comment.count()
+        })
